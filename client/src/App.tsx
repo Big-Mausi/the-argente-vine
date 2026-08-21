@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
-import { checkApiHealth } from "./services/api";
-function App() {
-  const [apiStatus, setApiStatus] = useState("Checking API...");
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Menu from "./pages/Menu";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
-  useEffect(() => {
-    checkApiHealth()
-      .then((message) => {
-        setApiStatus(message);
-      })
-      .catch(() => {
-        setApiStatus("Unable to connect to API");
-      });
-  }, []);
+const App = () => {
   return (
-    <main className="container py-5">
-      <h1>The Argenté Vine</h1>
+    <BrowserRouter>
+      <Navbar />
 
-      <p>Restaurant web application</p>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
 
-      <p className="mt-4">
-        API Status: <strong>{apiStatus}</strong>
-      </p>
-    </main>
+      <Footer />
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
