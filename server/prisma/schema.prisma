@@ -20,3 +20,14 @@ model ContactMessage {
   message     String
   createdAt   DateTime  @default(now())
 }
+
+model MenuItem{
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String
+  price         Int
+  image         String
+  alt           String
+ category       String
+ createdAt      DateTime  @default(now())
+}
