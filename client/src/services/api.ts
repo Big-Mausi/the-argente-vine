@@ -1,3 +1,4 @@
+import type { MenuItem } from "../types/menu";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function checkApiHealth(): Promise<string> {
@@ -28,6 +29,16 @@ export async function submitContactMessage(contactMessage: ContactMessage) {
 
   if (!response.ok) {
     throw new Error("Unable to send your message");
+  }
+
+  return response.json();
+}
+
+export async function getMenuItems(): Promise<MenuItem[]> {
+  const response = await fetch(`${API_URL}/menu`);
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch menu items");
   }
 
   return response.json();

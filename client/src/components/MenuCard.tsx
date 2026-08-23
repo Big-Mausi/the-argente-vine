@@ -1,4 +1,4 @@
-import type { MenuItem } from "../data/menuData";
+import type { MenuItem } from "../types/menu";
 
 interface MenuCardProps {
   item: MenuItem;
