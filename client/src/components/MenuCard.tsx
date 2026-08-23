@@ -8,7 +8,7 @@ const MenuCard = ({ item }: MenuCardProps) => {
   return (
     <div className="col-md-4 mb-4">
       <div className="card h-100">
-        <img src={item.image} className="card-img-top" alt="{item.alt" />
+        <img src={item.image} className="card-img-top" alt={item.alt} />
 
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">{item.name}</h5>

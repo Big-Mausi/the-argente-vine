@@ -9,3 +9,26 @@ export async function checkApiHealth(): Promise<string> {
 
   return response.text();
 }
+
+export interface ContactMessage {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export async function submitContactMessage(contactMessage: ContactMessage) {
+  const response = await fetch(`${API_URL}/contact`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(contactMessage),
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to send your message");
+  }
+
+  return response.json();
+}
