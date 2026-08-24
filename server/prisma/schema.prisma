@@ -21,7 +21,7 @@ model ContactMessage {
   createdAt   DateTime  @default(now())
 }
 
-model MenuItem{
+model MenuItem {
   id            Int       @id @default(autoincrement())
   name          String
   description   String
@@ -30,4 +30,44 @@ model MenuItem{
   alt           String
  category       String
  createdAt      DateTime  @default(now())
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Reservation {
+  id             Int               @id @default(autoincrement())
+  name           String
+  email          String
+  phone          String
+  date           DateTime
+  time           String
+  guests         Int
+  specialRequest String?
+  status         ReservationStatus @default(PENDING)
+  createdAt      DateTime          @default(now())
+}
+
+model Admin {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id
+  adminId   Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
 }

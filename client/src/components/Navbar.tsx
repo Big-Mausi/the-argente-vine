@@ -45,6 +45,12 @@ const Navbar = () => {
                 Contact
               </NavLink>
             </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/reservation">
+                Reservation
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

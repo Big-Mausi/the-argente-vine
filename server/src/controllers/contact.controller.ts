@@ -44,3 +44,52 @@ export const createContactMessage = async (
     });
   }
 };
+
+export const getContactMessages = async (_req: Request, res: Response) => {
+  try {
+    const contactMessages = await prisma.contactMessage.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json(contactMessages);
+  } catch (error) {
+    console.error("Error fetching contact messages:", error);
+
+    res.status(500).json({
+      message: "Unable to fetch contact messages.",
+    });
+  }
+};
+
+export const deleteContactMessage = async (
+  req: Request<{ id: string }>,
+  res: Response,
+) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        message: "Invalid message ID.",
+      });
+    }
+
+    await prisma.contactMessage.delete({
+      where: {
+        id,
+      },
+    });
+
+    res.status(200).json({
+      message: "Contact message deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting contact message:", error);
+
+    res.status(500).json({
+      message: "Unable to delete contact message.",
+    });
+  }
+};

@@ -1,8 +1,20 @@
 import { Router } from "express";
-import { createContactMessage } from "../controllers/contact.controller.js";
 
-const router = Router()
+import {
+  createContactMessage,
+  getContactMessages,
+  deleteContactMessage,
+} from "../controllers/contact.controller.js";
 
+import { requireAuth } from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+// Public
 router.post("/", createContactMessage);
 
-export default router
+// Protected admin routes
+router.get("/", requireAuth, getContactMessages);
+router.delete("/:id", requireAuth, deleteContactMessage);
+
+export default router;
