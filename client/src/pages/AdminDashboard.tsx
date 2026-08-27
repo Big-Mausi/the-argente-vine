@@ -116,6 +116,22 @@ const AdminDashboard = () => {
 
             <button
               type="button"
+              className="admin-btn admin-btn-outline"
+              onClick={() => navigate("/admin/employees")}
+            >
+              Employees
+            </button>
+
+            <button
+              type="button"
+              className="admin-btn admin-btn-outline"
+              onClick={() => navigate("/admin/payroll")}
+            >
+              Payroll
+            </button>
+
+            <button
+              type="button"
               className="admin-btn admin-btn-dark"
               onClick={handleLogout}
             >
