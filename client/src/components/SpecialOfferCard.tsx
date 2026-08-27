@@ -7,20 +7,26 @@ interface SpecialOfferCardProps {
 
 const SpecialOfferCard = ({ offer }: SpecialOfferCardProps) => {
   return (
-    <div className="col-md-4">
-      <div className="card border-0 shadow h-100">
-        <img src={offer.image} className="card-img-top" alt={offer.alt} />
+    <div className="col-12 col-md-6 col-lg-4 mb-4">
+      <article className="special-offer-card h-100">
+        <div className="special-offer-image-wrapper">
+          <img
+            src={offer.image}
+            className="special-offer-image"
+            alt={offer.alt}
+          />
+        </div>
 
-        <div className="card-body text-center d-flex flex-column">
-          <h4 className="fw-bold">{offer.title}</h4>
+        <div className="special-offer-content">
+          <h4 className="special-offer-title">{offer.title}</h4>
 
-          <p className="text-muted">{offer.description}</p>
+          <p className="special-offer-description">{offer.description}</p>
 
-          <Link to={offer.buttonLink} className="btn btn-warning mt-auto">
+          <Link to={offer.buttonLink} className="special-offer-button">
             {offer.buttonText}
           </Link>
         </div>
-      </div>
+      </article>
     </div>
   );
 };

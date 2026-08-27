@@ -7,23 +7,25 @@ const Home = () => {
     <>
       {/* Hero */}
       <section className="hero-section">
-        <div className="hero-overlay"></div>
+        {/* <img
+          src="/Grapewine.png"
+          alt="Grapes and wine"
+          className="hero-image"
+        /> */}
 
-        <div className="container position-relative h-100">
+        <div className="container h-100 position-relative ">
           <div className="row h-100 align-items-center justify-content-center text-center">
-            <div className="col-md-8 text-white">
+            <div className="col-md-8 text-white px-3 px-md-0">
               <h1 className="display-4 fw-bold">
                 Experience Flavors in Fine Argenté Dining
               </h1>
 
               <p className="lead">
-                {" "}
                 Fresh ingredients, bold & mellow flavors, unforgettable dining
                 experience.
               </p>
 
-              <Link to="/menu" className="btn btn-warning">
-                {" "}
+              <Link to="/menu" className="btn btn-warning btn-sm">
                 View Our Menu
               </Link>
             </div>
@@ -32,12 +34,14 @@ const Home = () => {
       </section>
 
       {/* Special Offers */}
-      <section className="py-5 bg-dark">
+      <section className="py-5 special-offers-section">
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold text-white">Special Offers</h2>
+            <h2 className="fw-bold special-offer-selection-title">
+              Special Offers
+            </h2>
 
-            <p className="text-white-50">
+            <p className="special-offer-section-description">
               Enjoy exclusive dining deals and deluxe experiences at The Argenté
               Vine.
             </p>
@@ -52,7 +56,7 @@ const Home = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="newsletter-section py-5 text-white">
+      <section className="newsletter-section py-5 text-white ">
         <div className="container text-center">
           <h2 className="fw-bold mb-3"> Join Our Exclusive Newsletter</h2>
 

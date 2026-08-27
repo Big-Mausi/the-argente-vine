@@ -19,6 +19,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import { AuthProvider } from "./context/AuthContext";
 
+import Employees from "./pages/Employees";
+import Payroll from "./pages/Payroll";
+
 const App = () => {
   return (
     <AuthProvider>
@@ -56,6 +59,9 @@ const App = () => {
               <Route path="/admin/menu" element={<AdminMenu />} />
 
               <Route path="/admin/contact" element={<AdminContact />} />
+
+              <Route path="/admin/employees" element={<Employees />} />
+              <Route path="/admin/payroll" element={<Payroll />} />
 
               <Route
                 path="/admin/reservations/:id"

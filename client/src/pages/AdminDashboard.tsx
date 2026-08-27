@@ -7,6 +7,7 @@ import {
   type Reservation,
 } from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "../admin.css";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -92,20 +93,22 @@ const AdminDashboard = () => {
   };
 
   return (
-    <main className="py-5">
+    <main className="admin-dashboard">
       <div className="container">
         {/* Dashboard Header */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="admin-header">
           <div>
-            <h1 className="fw-bold mb-1">Admin Dashboard</h1>
+            <p className="admin-eyebrow">ARGENTÉ VINE · ADMIN</p>
 
-            <p className="text-muted mb-0">Welcome, {admin?.email}</p>
+            <h1>Admin Dashboard</h1>
+
+            <p className="admin-welcome">Welcome back, {admin?.email}</p>
           </div>
 
-          <div className="d-flex gap-2">
+          <div className="admin-actions">
             <button
               type="button"
-              className="btn btn-outline-dark"
+              className="admin-btn admin-btn-outline"
               onClick={() => navigate("/admin/menu")}
             >
               Manage Menu
@@ -113,7 +116,7 @@ const AdminDashboard = () => {
 
             <button
               type="button"
-              className="btn btn-outline-dark"
+              className="admin-btn admin-btn-dark"
               onClick={handleLogout}
             >
               Logout
@@ -122,89 +125,88 @@ const AdminDashboard = () => {
         </div>
 
         {/* Reservations */}
-        <div className="card border-0 shadow-sm">
-          <div className="card-body">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2 className="h4 fw-bold mb-0">Reservations</h2>
-
-              <button
-                type="button"
-                className="btn btn-outline-secondary btn-sm"
-                onClick={loadReservations}
-              >
-                Refresh
-              </button>
+        <section className="admin-card">
+          <div className="admin-card-header">
+            <div>
+              <p className="admin-section-label">BOOKINGS</p>
+              <h2>Reservations</h2>
             </div>
 
-            {error && <div className="alert alert-danger">{error}</div>}
+            <button
+              type="button"
+              className="admin-refresh"
+              onClick={loadReservations}
+            >
+              Refresh
+            </button>
+          </div>
 
-            {loading ? (
-              <p className="text-muted">Loading reservations...</p>
-            ) : reservations.length === 0 ? (
-              <div className="text-center py-5">
-                <p className="text-muted mb-0">No reservations found.</p>
-              </div>
-            ) : (
-              <div className="table-responsive">
-                <table className="table table-hover align-middle">
-                  <thead>
-                    <tr>
-                      <th>Guest</th>
-                      <th>Date</th>
-                      <th>Time</th>
-                      <th>Guests</th>
-                      <th>Request</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
+          {error && <div className="admin-alert">{error}</div>}
 
-                  <tbody>
-                    {reservations.map((reservation) => (
-                      <tr key={reservation.id}>
-                        <td>
-                          <strong>{reservation.name}</strong>
+          {loading ? (
+            <div className="admin-empty-state">
+              <p>Loading reservations...</p>
+            </div>
+          ) : reservations.length === 0 ? (
+            <div className="admin-empty-state">
+              <p>No reservations found.</p>
+            </div>
+          ) : (
+            <div className="admin-table-wrapper">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Guests</th>
+                    <th>Request</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
 
-                          <br />
+                <tbody>
+                  {reservations.map((reservation) => (
+                    <tr key={reservation.id}>
+                      <td>
+                        <div className="guest-name">{reservation.name}</div>
 
-                          <small className="text-muted">
-                            {reservation.email}
-                          </small>
-                        </td>
+                        <div className="guest-email">{reservation.email}</div>
+                      </td>
 
-                        <td>
-                          {new Date(reservation.date).toLocaleDateString()}
-                        </td>
+                      <td>{new Date(reservation.date).toLocaleDateString()}</td>
 
-                        <td>{reservation.time}</td>
+                      <td>{reservation.time}</td>
 
-                        <td>{reservation.guests}</td>
+                      <td>{reservation.guests}</td>
 
-                        <td>{reservation.specialRequest || "—"}</td>
+                      <td className="request-cell">
+                        {reservation.specialRequest || "—"}
+                      </td>
 
-                        <td>
-                          <select
-                            className="form-select form-select-sm"
-                            value={reservation.status}
-                            onChange={(event) =>
-                              handleStatusChange(
-                                reservation.id,
-                                event.target.value as Reservation["status"],
-                              )
-                            }
-                          >
-                            <option value="PENDING">Pending</option>
+                      <td>
+                        <select
+                          className={`status-select status-${reservation.status.toLowerCase()}`}
+                          value={reservation.status}
+                          onChange={(event) =>
+                            handleStatusChange(
+                              reservation.id,
+                              event.target.value as Reservation["status"],
+                            )
+                          }
+                        >
+                          <option value="PENDING">Pending</option>
+                          <option value="CONFIRMED">Confirmed</option>
+                          <option value="CANCELLED">Cancelled</option>
+                        </select>
+                      </td>
 
-                            <option value="CONFIRMED">Confirmed</option>
-
-                            <option value="CANCELLED">Cancelled</option>
-                          </select>
-                        </td>
-
-                        <td>
+                      <td>
+                        <div className="table-actions">
                           <button
                             type="button"
-                            className="btn btn-sm btn-outline-dark me-2"
+                            className="action-view"
                             onClick={() =>
                               navigate(`/admin/reservations/${reservation.id}`)
                             }
@@ -214,20 +216,20 @@ const AdminDashboard = () => {
 
                           <button
                             type="button"
-                            className="btn btn-sm btn-outline-danger"
+                            className="action-delete"
                             onClick={() => handleDelete(reservation.id)}
                           >
                             Delete
                           </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
       </div>
     </main>
   );

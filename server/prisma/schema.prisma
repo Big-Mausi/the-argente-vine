@@ -71,3 +71,66 @@ model Session {
   @@index([adminId])
   @@index([expiresAt])
 }
+
+model Employee {
+  id             Int            @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String          @unique
+  phone          String
+  jobTitle       String
+  department     String
+  basicSalary    Int
+  isActive       Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  payrollRecords PayrollRecord[]
+}
+
+model PayrollPeriod {
+  id             Int             @id @default(autoincrement())
+  name           String
+  startDate      DateTime
+  endDate        DateTime
+  status         PayrollStatus   @default(OPEN)
+  createdAt      DateTime        @default(now())
+
+  payrollRecords PayrollRecord[]
+}
+
+model PayrollRecord {
+  id             Int            @id @default(autoincrement())
+  employeeId     Int
+  payrollPeriodId Int
+
+  basicSalary    Int
+  allowances     Int            @default(0)
+  deductions     Int            @default(0)
+  grossSalary    Int
+  netSalary      Int
+
+  status         PayrollRecordStatus @default(PENDING)
+  paidAt         DateTime?
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  employee       Employee       @relation(fields: [employeeId], references: [id], onDelete: Restrict)
+  payrollPeriod  PayrollPeriod  @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, payrollPeriodId])
+  @@index([employeeId])
+  @@index([payrollPeriodId])
+}
+
+enum PayrollStatus {
+  OPEN
+  PROCESSED
+  CLOSED
+}
+
+enum PayrollRecordStatus {
+  PENDING
+  PAID
+}

@@ -266,3 +266,223 @@ export async function deleteContactMessage(id: number) {
 
   return response.json();
 }
+
+// -----------------------------
+// Employees
+// -----------------------------
+
+export interface Employee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  jobTitle: string;
+  department: string;
+  basicSalary: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateEmployee {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  jobTitle: string;
+  department: string;
+  basicSalary: number;
+}
+
+export async function getEmployees(): Promise<Employee[]> {
+  const response = await fetch(`${API_URL}/employees`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch employees");
+  }
+
+  return response.json();
+}
+
+export async function createEmployee(
+  employee: CreateEmployee,
+): Promise<Employee> {
+  const response = await fetch(`${API_URL}/employees`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(employee),
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to create employee");
+  }
+
+  return response.json();
+}
+
+export async function updateEmployee(
+  id: number,
+  employee: Partial<CreateEmployee> & {
+    isActive?: boolean;
+  },
+): Promise<Employee> {
+  const response = await fetch(`${API_URL}/employees/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(employee),
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to update employee");
+  }
+
+  return response.json();
+}
+
+export async function deactivateEmployee(id: number): Promise<Employee> {
+  const response = await fetch(`${API_URL}/employees/${id}/deactivate`, {
+    method: "PATCH",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to deactivate employee");
+  }
+
+  return response.json();
+}
+
+// -----------------------------
+// Payroll
+// -----------------------------
+
+export interface PayrollPeriod {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  status: "OPEN" | "PROCESSED" | "CLOSED";
+  createdAt: string;
+}
+
+export interface PayrollRecord {
+  id: number;
+  employeeId: number;
+  payrollPeriodId: number;
+  basicSalary: number;
+  allowances: number;
+  deductions: number;
+  grossSalary: number;
+  netSalary: number;
+  status: "PENDING" | "PAID";
+  paidAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  employee: Employee;
+  payrollPeriod: PayrollPeriod;
+}
+
+export interface CreatePayrollPeriod {
+  name: string;
+  startDate: string;
+  endDate: string;
+}
+
+export async function getPayrollPeriods(): Promise<PayrollPeriod[]> {
+  const response = await fetch(`${API_URL}/payroll/periods`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch payroll periods");
+  }
+
+  return response.json();
+}
+
+export async function createPayrollPeriod(
+  period: CreatePayrollPeriod,
+): Promise<PayrollPeriod> {
+  const response = await fetch(`${API_URL}/payroll/periods`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(period),
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to create payroll period");
+  }
+
+  return response.json();
+}
+
+export async function processPayroll(
+  periodId: number,
+): Promise<PayrollRecord[]> {
+  const response = await fetch(
+    `${API_URL}/payroll/periods/${periodId}/process`,
+    {
+      method: "POST",
+      credentials: "include",
+    },
+  );
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => null);
+
+    throw new Error(data?.message || "Unable to process payroll");
+  }
+
+  return response.json();
+}
+
+export async function getPayrollRecords(): Promise<PayrollRecord[]> {
+  const response = await fetch(`${API_URL}/payroll/records`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch payroll records");
+  }
+
+  return response.json();
+}
+
+export async function getPayrollRecord(id: number): Promise<PayrollRecord> {
+  const response = await fetch(`${API_URL}/payroll/records/${id}`, {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch payroll record");
+  }
+
+  return response.json();
+}
+
+export async function markPayrollAsPaid(id: number): Promise<PayrollRecord> {
+  const response = await fetch(`${API_URL}/payroll/records/${id}/pay`, {
+    method: "PATCH",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => null);
+
+    throw new Error(data?.message || "Unable to mark payroll as paid");
+  }
+
+  return response.json();
+}
