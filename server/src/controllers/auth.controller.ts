@@ -52,7 +52,7 @@ export const login = async (
     res.cookie("sessionId", session.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
@@ -85,7 +85,7 @@ export const logout = async (req: Request, res: Response) => {
     res.clearCookie("sessionId", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     return res.status(200).json({
@@ -136,7 +136,7 @@ export const getCurrentAdmin = async (req: Request, res: Response) => {
       res.clearCookie("sessionId", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "none",
       });
 
       return res.status(401).json({
