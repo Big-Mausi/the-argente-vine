@@ -77,7 +77,11 @@ app.use("/api/employees", employeeRoutes);
 app.use(express.static(clientDistPath));
 
 app.use((req, res, next) => {
-  if (req.method === "GET" && !req.path.startsWith("/api/")) {
+  if (req.path.startsWith("/api/")) {
+    return next();
+  }
+
+  if (req.method === "GET") {
     return res.sendFile(path.join(clientDistPath, "index.html"));
   }
 
