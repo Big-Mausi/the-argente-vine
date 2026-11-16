@@ -21,15 +21,30 @@ model ContactMessage {
   createdAt   DateTime  @default(now())
 }
 
+enum MenuMediaType {
+  IMAGE
+  VIDEO
+}
+
 model MenuItem {
-  id            Int       @id @default(autoincrement())
-  name          String
-  description   String
-  price         Int
-  image         String
-  alt           String
- category       String
- createdAt      DateTime  @default(now())
+  id              Int                 @id @default(autoincrement())
+  name            String
+  description     String
+  price           Int
+  mediaUrl        String
+  mediaPublicId   String?
+  mediaType       MenuMediaType       @default(IMAGE)
+  alt             String
+ category         String
+ isAvailable      Boolean             @default(true)
+ isFeatured       Boolean             @default(false)
+ sortOrder        Int                 @default(0)
+ createdAt        DateTime            @default(now())
+ updatedAt        DateTime            @updatedAt
+
+ @@index([category])
+ @@index([isAvailable])
+ @@index([sortOrder])
 }
 
 enum ReservationStatus {
